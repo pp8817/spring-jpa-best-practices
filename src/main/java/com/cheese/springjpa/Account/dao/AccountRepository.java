@@ -5,10 +5,12 @@ import com.cheese.springjpa.Account.domain.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
+import java.util.Optional;
+
 public interface AccountRepository extends JpaRepository<Account, Long>, AccountSupportRepository,
     QuerydslPredicateExecutor<Account> {
 
-  Account findByEmail(Email email);
+  Optional<Account> findByEmail(Email email);
 
   boolean existsByEmail(Email email);
 }

@@ -12,25 +12,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AccountService {
 
     private final AccountRepository accountRepository;
 
-
-    @Transactional(readOnly = true)
     public Account findById(long id) {
-        final Optional<Account> account = accountRepository.findById(id);
-        account.orElseThrow(() -> new AccountNotFoundException(id));
-        return account.get();
+        return accountRepository.findById(id).orElseThrow(
+                () -> new AccountNotFoundException(id));
     }
 
-    @Transactional(readOnly = true)
     public Account findByEmail(final Email email) {
-        final Account account = accountRepository.findByEmail(email);
-        if (account == null) throw new AccountNotFoundException(email);
-        return account;
+        return accountRepository.findByEmail(email).orElseThrow(
+                () -> new AccountNotFoundException(email));
     }
 
 //    @Transactional(readOnly = true)
@@ -38,11 +33,7 @@ public class AccountService {
 //        return accountRepository.findAll(pageable);
 //    }
 
-    @Transactional(readOnly = true)
-    public boolean isExistedEmail(Email email) {
-        return accountRepository.findByEmail(email) != null;
-    }
-
+    @Transactional
     public Account updateMyAccount(long id, AccountDto.MyAccountReq dto) {
         final Account account = findById(id);
         account.updateMyAccount(dto);
@@ -50,9 +41,12 @@ public class AccountService {
     }
 
     public Account create(AccountDto.SignUpReq dto) {
-        if (isExistedEmail(dto.getEmail()))
-            throw new EmailDuplicationException(dto.getEmail());
-        return accountRepository.save(dto.toEntity());
+        if (isExistedEmail(dto.getEmail())) // email에 일치하는 계정이 있다면
+            throw new EmailDuplicationException(dto.getEmail()); // 중복 예외 발생
+        return accountRepository.save(dto.toEntity()); //없다면 계정 생성
     }
 
+    public boolean isExistedEmail(Email email) {
+        return accountRepository.findByEmail(email).isPresent();
+    }
 }

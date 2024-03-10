@@ -62,7 +62,7 @@ public class AccountFindServiceTest {
     @Test
     public void findByEmail_존재하는경우() {
         //given
-        given(accountRepository.findByEmail(any())).willReturn(account);
+        given(accountRepository.findByEmail(any())).willReturn(Optional.of(account));
 
         //when
         final Account findAccount = accountFindService.findByEmail(email);

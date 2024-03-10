@@ -21,9 +21,8 @@ public class AccountFindService {
 
     @Transactional(readOnly = true)
     public Account findByEmail(final Email email) {
-        final Account account = accountRepository.findByEmail(email);
-        if (account == null) throw new AccountNotFoundException(email);
-        return account;
+        return accountRepository.findByEmail(email).orElseThrow(
+                () -> new AccountNotFoundException(email));
     }
 
     @Transactional(readOnly = true)

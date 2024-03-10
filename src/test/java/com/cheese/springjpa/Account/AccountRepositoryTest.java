@@ -28,7 +28,7 @@ public class AccountRepositoryTest {
   @Test
   public void findByEmail_test() {
     final String email = "test001@test.com";
-    final Account account = accountRepository.findByEmail(Email.of(email));
+    final Account account = accountRepository.findByEmail(Email.of(email)).get();
     assertThat(account.getEmail().getValue()).isEqualTo(email);
   }
 
