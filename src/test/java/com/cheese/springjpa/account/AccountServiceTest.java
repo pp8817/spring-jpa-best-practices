@@ -55,7 +55,7 @@ public class AccountServiceTest {
     public void create_중복된_이메일_경우_EmailDuplicationException() {
         //given
         final AccountDto.SignUpReq dto = buildSignUpReq();
-        given(accountRepository.findByEmail(any())).willReturn(dto.toEntity());
+        given(accountRepository.findByEmail(any())).willReturn(Optional.of(dto.toEntity()));
 
         //when
         accountService.create(dto);
@@ -104,7 +104,7 @@ public class AccountServiceTest {
     public void isExistedEmail_존재하는이메일_ReturnTrue() {
         //given
         final AccountDto.SignUpReq signUpReq = buildSignUpReq();
-        given(accountRepository.findByEmail(any())).willReturn(signUpReq.toEntity());
+        given(accountRepository.findByEmail(any())).willReturn(Optional.of(signUpReq.toEntity()));
 
         //when
         final boolean existedEmail = accountService.isExistedEmail(any());
@@ -118,7 +118,7 @@ public class AccountServiceTest {
     public void findByEmail_존재하는_이매일조해경우_해당유저리턴() {
         //given
         final Account account = buildSignUpReq().toEntity();
-        given(accountRepository.findByEmail(account.getEmail())).willReturn(account);
+        given(accountRepository.findByEmail(account.getEmail())).willReturn(Optional.of(account));
 
         //when
         final Account accountServiceByEmail = accountService.findByEmail(account.getEmail());

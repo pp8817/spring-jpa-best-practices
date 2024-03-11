@@ -8,24 +8,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AccountFindService {
 
     private final AccountRepository accountRepository;
 
-    @Transactional(readOnly = true)
     public Account findById(long id) {
         return accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
     }
 
-    @Transactional(readOnly = true)
     public Account findByEmail(final Email email) {
         return accountRepository.findByEmail(email).orElseThrow(
                 () -> new AccountNotFoundException(email));
     }
 
-    @Transactional(readOnly = true)
     public boolean isExistedEmail(Email email) {
         return accountRepository.existsByEmail(email);
     }

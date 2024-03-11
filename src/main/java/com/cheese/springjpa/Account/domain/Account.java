@@ -2,18 +2,16 @@ package com.cheese.springjpa.Account.domain;
 
 import com.cheese.springjpa.Account.dto.AccountDto.MyAccountReq;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import static javax.persistence.GenerationType.*;
 
 @Entity
 @Table(name = "account")
@@ -22,7 +20,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 public class Account {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = IDENTITY)
     private long id;
 
     @Embedded
